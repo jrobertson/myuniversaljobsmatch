@@ -66,13 +66,15 @@ class MyUniversalJobsMatch
     url = @url_base + 'GetJob.aspx?JobID=' + id
     doc = Nokorexi.new(url).to_doc
     content = doc.root.at_css '.jobViewContent'
+    title = content.element('h2[2]/text()')
     description = content.element('div')
 
     raw_summary = doc.root.at_css('.jobViewSummary').xpath('dl/dd/text()')
     job_id, posting_date, company, location, industries, job_type = raw_summary
     
-    fields = %i(job_id posting_date company location industries job_type description)
-    Hash[fields.zip(raw_summary + [description])]
+    fields = %i(job_id posting_date company location industries job_type 
+                                                             title description)
+    Hash[fields.zip(raw_summary + [title, description])]
     
   end
 end
