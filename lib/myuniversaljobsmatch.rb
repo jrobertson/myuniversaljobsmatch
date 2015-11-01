@@ -44,7 +44,7 @@ class MyUniversalJobsMatch
     end
 
     dx = Dynarex.new('vacancies[title, desc, date, time, tags, xslt]/' + \
-             'vacancy(jobid, date, title, url, company, location, created_at)')
+             'vacancy(job_id, date, title, url, company, location, created_at)')
 
     dx.title = "Universal Jobmatch jobs - Search results for '#{title}'"
     dx.desc = "generated from web scrape of jobsearch." + \
@@ -54,7 +54,7 @@ class MyUniversalJobsMatch
     dx.time = Time.now.strftime("%H:%M")
 
     a.each do |row|
-      dx.create Hash[%i(jobid date title url company location created_at).\
+      dx.create Hash[%i(job_id date title url company location created_at).\
                                                                       zip(row)]
     end
 
@@ -62,15 +62,17 @@ class MyUniversalJobsMatch
   end
   
   def query(id)
-    
+
     url = @url_base + 'GetJob.aspx?JobID=' + id
     buffer = RXFHelper.read(url).first
+
     doc = Nokorexi.new(buffer.gsub(/<br\s*\/?>/i,'')).to_doc
     content = doc.root.at_css '.jobViewContent'
     title = content.element('h2[2]/text()')
     description = content.element('div')
 
     a = doc.root.at_css('.jobViewSummary').xpath('dl/*/text()')
+    a.concat ['title', title, 'description', description]
     Hash[a.each_slice(2).map{|k,v| [k.downcase.gsub(' ','_').to_sym,v]}]
     
   end
