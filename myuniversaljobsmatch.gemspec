@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'myuniversaljobsmatch'
-  s.version = '0.1.5'
+  s.version = '0.1.6'
   s.summary = 'A web scraper which searches for job adverts on jobsearch.direct.gov.uk'
   s.authors = ['James Robertson']
   s.files = Dir['lib/myuniversaljobsmatch.rb']

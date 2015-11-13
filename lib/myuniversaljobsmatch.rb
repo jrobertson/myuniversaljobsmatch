@@ -66,14 +66,26 @@ class MyUniversalJobsMatch
     url = @url_base + 'GetJob.aspx?JobID=' + id
     buffer = RXFHelper.read(url).first
 
-    doc = Nokorexi.new(buffer.gsub(/<br\s*\/?>/i,'')).to_doc
+    doc = Nokorexi.new(buffer.gsub(/<br\s*\/?>/i,"\n")).to_doc
     content = doc.root.at_css '.jobViewContent'
     title = content.element('h2[2]/text()')
     description = content.element('div')
 
-    a = doc.root.at_css('.jobViewSummary').xpath('dl/*/text()')
-    a.concat ['title', title, 'description', description]
-    Hash[a.each_slice(2).map{|k,v| [k.downcase.gsub(' ','_').to_sym,v]}]
+    a = doc.root.at_css('.jobViewSummary').xpath('dl/*')
+    
+    a2 = []
+    while a.length > 0 do
+
+      if a.first.name == 'dt' then
+        a2 << [a.shift.text, '']
+      elsif
+        a2[-1][-1] << a.shift.text + "\n"
+      end
+    end
+    
+    a2.concat [['title', title], ['description', description.content]]
+
+    Hash[a2.map{|k,v| [k.downcase.gsub(' ','_').to_sym,v]}]
     
   end
 end
