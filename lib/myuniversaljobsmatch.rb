@@ -26,22 +26,31 @@ class MyUniversalJobsMatch
     url = @url_base + "jobsearch/powersearch.aspx?qt=2&rad=20&tm=-1&" + \
                                                 "where=#{where}&tjt=#{title}"
     doc = Nokorexi.new(url).to_doc
-
+    
     table = doc.root.at_css('.JSresults')
-    a = table.xpath('tr[td]').map do |row|
+
+    a = table.xpath('tr/td').map do |row|
 
       # get the date
-      date = row.element('td/span/text()')
-      link = row.element('td[3]/a')
-      jobid = link.attributes[:href][/JobID=(\d+)/,1]
-      title = link.text
+      #date = row.element('td/span/text()')
+      date = row.element('div/div[2]/span/text()')
+
+      #link = row.element('td[3]/a')
+      link = row.element('div[3]/div[2]/a')
+
       url = link.attributes[:href]
-      company = row.element('td[4]/span/text()')
-      location = row.element('td[5]/span/text()')
+      jobid = url[/JobID=(\d+)/,1]
+      title = link.text
+
+      #company = row.element('td[4]/span/text()')
+      company = row.element('div[4]/div[2]/span/text()')
+      #location = row.element('td[5]/span/text()')
+      location = row.element('div[5]/div[2]/span/text()')
 
       [jobid, date, title, url, company, location]
       
     end
+
 
     dx = Dynarex.new('vacancies[title, desc, date, time, tags, xslt]/' + \
              'vacancy(job_id, date, title, url, company, location, created_at)')
