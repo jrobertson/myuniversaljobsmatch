@@ -1,12 +1,13 @@
 Gem::Specification.new do |s|
   s.name = 'myuniversaljobsmatch'
-  s.version = '0.1.7'
+  s.version = '0.2.0'
   s.summary = 'A web scraper which searches for job adverts on ' + 
-      'jobsearch.direct.gov.uk'
+      'findajob.dwp.gov.uk'
   s.authors = ['James Robertson']
   s.files = Dir['lib/myuniversaljobsmatch.rb']
-  s.add_runtime_dependency('dynarex', '~> 1.7', '>=1.7.30')
-  s.add_runtime_dependency('nokorexi', '~> 0.3', '>=0.3.2')
+  s.add_runtime_dependency('chronic', '~> 0.10', '>=0.10.2')
+  s.add_runtime_dependency('dynarex', '~> 1.8', '>=1.8.21')
+  s.add_runtime_dependency('nokorexi', '~> 0.5', '>=0.5.0')
   s.signing_key = '../privatekeys/myuniversaljobsmatch.pem'
   s.cert_chain  = ['gem-public_cert.pem']
   s.license = 'MIT'
