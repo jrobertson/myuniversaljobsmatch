@@ -55,16 +55,18 @@ class MyUniversalJobsMatch
     params[:cty] = contract_type if contract_type
     params[:cti] = hours if hours
     
-    case sort_by.to_sym
-    when 'date'
-      params[:sb] = :date
-      params[:sd] = :down
-    when :highest_salary
-      params[:sb] = :salary
-      params[:sd] = :down
-    when :lowest_salary
-      params[:sb] = :salary      
-      params[:sd] = :up
+    if sort_by then
+      case sort_by.to_sym
+      when :date
+        params[:sb] = :date
+        params[:sd] = :down
+      when :highest_salary
+        params[:sb] = :salary
+        params[:sd] = :down
+      when :lowest_salary
+        params[:sb] = :salary      
+        params[:sd] = :up
+      end
     end
         
     url = @url_base + 'search/?' + params.map {|x| x.join('=') }.join('&')

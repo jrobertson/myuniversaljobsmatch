@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'myuniversaljobsmatch'
-  s.version = '0.2.0'
+  s.version = '0.2.1'
   s.summary = 'A web scraper which searches for job adverts on ' + 
       'findajob.dwp.gov.uk'
   s.authors = ['James Robertson']
